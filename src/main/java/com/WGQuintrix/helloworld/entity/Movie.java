@@ -22,8 +22,8 @@ public class Movie {
 	@Column(name = "id")
 	private Integer id;
 	
-	@Column(name = "movie_name")
-	private String movie_name;
+	@Column(name = "name")
+	private String name;
 	
 	@Column(name = "genre")
 	private String genre;
