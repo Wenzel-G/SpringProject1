@@ -1,4 +1,4 @@
-package com.WGQuintrix.helloworld;
+package com.WGQuintrix.helloworld.controllers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,50 +15,41 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.WGQuintrix.helloworld.entity.Car;
+import com.WGQuintrix.helloworld.service.CarService;
 
 @RestController
 public class HelloController {
 	
 	
+	@Autowired
+	private CarService carService;
 	
-	Car car1 = new Car("Toyota", "Camry", 2000);
-	Car car2 = new Car("Ford", "Mustang", 1969);
-	Car car3 = new Car("Lambourgini", "Murciélago", 2020);
-	Car car4 = new Car("Toyota", "Corolla", 2008);
-	
-	Car carArray[] = {car1, car2, car3, car4};
-	
-	List<Car> carList = new ArrayList<Car>(Arrays.asList(carArray));
+
 	
 	@GetMapping("/cars")
 	public List<Car> getCars() {
 		
-		return carList;
+		return carService.getCars();
 	}
 	
 	@GetMapping("/cars/make")
 	public List<Car> getMake(@RequestParam String make) {
 		
-		List<Car> makeList = carList.stream().filter(p -> p.getMake().equals(make)).collect(Collectors.toList());
-		
-		return  makeList;
+		return  carService.getMake(make);
 	}
 	
 	@PostMapping("/cars/addCarPost")
 	@ResponseBody
 	public List<Car> addCar(@RequestBody Car car){
 		
-		carList.add(car);
-		
-		return carList;
+		return carService.addCar(car);
 	}
 	
 	@GetMapping("/cars/addCar")
 	public List<Car> addCar(@RequestParam String make, @RequestParam String model, @RequestParam int year){
 		  
 		Car toAdd = new Car(make, model, year);
-		carList.add(toAdd);
-		return carList;
+		return carService.addCar(toAdd);
 	}
 	
 	
